@@ -96,7 +96,9 @@ install_home_templates() {
 required_files() {
   cat <<'EOF_REQ'
 CLAUDE.md
-notes/Status.md
+README.md
+README.tsx
+notes/status.md
 mise.toml
 .mise/tasks/welcome
 .mise/tasks/self
@@ -129,5 +131,6 @@ shiv:rudi
 shiv:notes
 shiv:modules
 shiv:codebase
+shiv:readme
 EOF_REQ
 }

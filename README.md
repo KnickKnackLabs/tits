@@ -40,6 +40,8 @@ tits doctor --home .
 
 For a brand-new or no-commit home with a clean working tree, `init` creates the initial `bootstrap agent home` commit. Use `--no-commit` to leave files uncommitted.
 
+- `README.tsx` / `README.md` — dynamic home README via KnickKnackLabs/readme
+- `notes/status.md` — lowercase continuity note
 - `mise run welcome` — session-start orientation
 - `mise run self` — self-session placeholder
 - `mise run agent:list` and `agent:identity` — shimmer wake contract
@@ -50,7 +52,7 @@ For a brand-new or no-commit home with a clean working tree, `init` creates the 
 
 `tits` depends on `shimmer` today because shimmer owns workflow generation. When that surface moves into `homes`, this generator should depend on homes instead.
 
-Generated homes declare the runtime tools their CI/local surface expects, including `shimmer`, `sessions`, `secrets`, `emails`, `rudi`, `notes`, `modules`, and `codebase`.
+Generated homes declare the runtime tools their CI/local surface expects, including `shimmer`, `sessions`, `secrets`, `emails`, `rudi`, `notes`, `modules`, `codebase`, and `readme`.
 
 ## Non-goals for the first pass
 

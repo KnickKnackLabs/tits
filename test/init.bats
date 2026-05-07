@@ -8,7 +8,10 @@ load test_helper
   run tits init --agent iris --home "$home" --skip-workflows
   assert_success
   assert_file_exists "$home/CLAUDE.md"
-  assert_file_exists "$home/notes/Status.md"
+  assert_file_exists "$home/README.md"
+  assert_file_exists "$home/README.tsx"
+  assert_file_exists "$home/notes/status.md"
+  [ "$(find "$home/notes" -maxdepth 1 -type f -exec basename {} \; | sort)" = "status.md" ]
   assert_file_exists "$home/mise.toml"
   assert_file_executable "$home/.mise/tasks/welcome"
   assert_file_executable "$home/.mise/tasks/agent/list"

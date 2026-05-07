@@ -60,6 +60,8 @@ tits doctor --home .`}</CodeBlock>
         {"For a brand-new or no-commit home with a clean working tree, "}<Code>init</Code>{" creates the initial "}<Code>bootstrap agent home</Code>{" commit. Use "}<Code>--no-commit</Code>{" to leave files uncommitted."}
       </Paragraph>
       <List>
+        <Item><Code>README.tsx</Code>{" / "}<Code>README.md</Code>{" — dynamic home README via KnickKnackLabs/readme"}</Item>
+        <Item><Code>notes/status.md</Code>{" — lowercase continuity note"}</Item>
         <Item><Code>mise run welcome</Code>{" — session-start orientation"}</Item>
         <Item><Code>mise run self</Code>{" — self-session placeholder"}</Item>
         <Item><Code>mise run agent:list</Code>{" and "}<Code>agent:identity</Code>{" — shimmer wake contract"}</Item>
@@ -73,7 +75,7 @@ tits doctor --home .`}</CodeBlock>
         <Code>tits</Code>{" depends on "}<Code>shimmer</Code>{" today because shimmer owns workflow generation. When that surface moves into "}<Code>homes</Code>{", this generator should depend on homes instead."}
       </Paragraph>
       <Paragraph>
-        {"Generated homes declare the runtime tools their CI/local surface expects, including "}<Code>shimmer</Code>{", "}<Code>sessions</Code>{", "}<Code>secrets</Code>{", "}<Code>emails</Code>{", "}<Code>rudi</Code>{", "}<Code>notes</Code>{", "}<Code>modules</Code>{", and "}<Code>codebase</Code>{"."}
+        {"Generated homes declare the runtime tools their CI/local surface expects, including "}<Code>shimmer</Code>{", "}<Code>sessions</Code>{", "}<Code>secrets</Code>{", "}<Code>emails</Code>{", "}<Code>rudi</Code>{", "}<Code>notes</Code>{", "}<Code>modules</Code>{", "}<Code>codebase</Code>{", and "}<Code>readme</Code>{"."}
       </Paragraph>
     </Section>
 

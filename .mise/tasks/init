@@ -43,6 +43,9 @@ else
   (cd "$TARGET_HOME" && shimmer workflows:generate)
 fi
 
+say "run: readme build"
+(cd "$TARGET_HOME" && readme build)
+
 if [ "${usage_no_commit:-false}" = "true" ]; then
   say "skip: initial commit (--no-commit)"
 elif { [ "$NEW_REPO" = "true" ] || [ "$HAS_COMMITS" = "false" ]; } && [ -z "$PREEXISTING_CHANGES" ]; then
