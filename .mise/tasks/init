@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#MISE description="Initialize an agent home repo"
+#USAGE flag "--agent <agent>" help="Agent name to scaffold (for example: iris)"
+#USAGE flag "--home <path>" help="Home repo path to create or update"
+#USAGE flag "--skip-workflows" help="Skip shimmer workflows:generate (for tests or offline scaffolding)"
+#USAGE example "tits init --agent iris --home ~/agents/iris/home" header="Create Iris's home"
+set -euo pipefail
+
+source "$MISE_CONFIG_ROOT/lib/tits.sh"
+
+AGENT="${usage_agent:-}"
+validate_agent "$AGENT"
+AGENT_UPPER="$(agent_upper_secret "$AGENT")"
+TARGET_HOME="$(resolve_home_path "${usage_home:-}")"
+
+mkdir -p "$TARGET_HOME"
+
+if [ ! -d "$TARGET_HOME/.git" ]; then
+  git -C "$TARGET_HOME" init -q -b main
+  say "init: git repo"
+else
+  say "keep: git repo"
+fi
+
+install_home_templates "$AGENT" "$AGENT_UPPER"
+
+mise trust "$TARGET_HOME/mise.toml" >/dev/null
+
+if [ "${usage_skip_workflows:-false}" = "true" ]; then
+  say "skip: shimmer workflows:generate"
+else
+  say "run: shimmer workflows:generate"
+  (cd "$TARGET_HOME" && shimmer workflows:generate)
+fi
+
+say "done: $AGENT home at $TARGET_HOME"

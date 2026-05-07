@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+#MISE description="Check an agent home scaffold"
+#USAGE flag "--home <path>" help="Home repo path to check"
+set -euo pipefail
+
+source "$MISE_CONFIG_ROOT/lib/tits.sh"
+
+TARGET_HOME="$(resolve_home_path "${usage_home:-}")"
+FAIL=0
+
+check_ok() { printf '✓ %s\n' "$1"; }
+check_fail() { printf '✗ %s\n' "$1"; FAIL=1; }
+
+if [ -d "$TARGET_HOME/.git" ]; then
+  check_ok "git repo"
+else
+  check_fail "missing git repo"
+fi
+
+while IFS= read -r file; do
+  [ -z "$file" ] && continue
+  if [ -e "$TARGET_HOME/$file" ]; then
+    check_ok "$file"
+  else
+    check_fail "missing $file"
+  fi
+done < <(required_files)
+
+while IFS= read -r file; do
+  [ -z "$file" ] && continue
+  if [ -x "$TARGET_HOME/$file" ]; then
+    check_ok "executable $file"
+  else
+    check_fail "not executable $file"
+  fi
+done < <(required_executables)
+
+if [ -f "$TARGET_HOME/mise.toml" ]; then
+  while IFS= read -r tool; do
+    [ -z "$tool" ] && continue
+    if grep -Fq "\"$tool\"" "$TARGET_HOME/mise.toml"; then
+      check_ok "declares $tool"
+    else
+      check_fail "missing tool declaration $tool"
+    fi
+  done < <(required_mise_tools)
+fi
+
+if [ -x "$TARGET_HOME/.mise/tasks/agent/list" ]; then
+  if agents=$(cd "$TARGET_HOME" && mise run -q agent:list 2>/dev/null) && [ -n "$agents" ]; then
+    check_ok "agent:list returns agents"
+    while IFS= read -r agent; do
+      [ -z "$agent" ] && continue
+      if [ -f "$TARGET_HOME/.github/workflows/${agent}.yml" ]; then
+        check_ok "workflow for $agent"
+      else
+        check_fail "missing workflow for $agent"
+      fi
+    done <<EOF_AGENTS
+$agents
+EOF_AGENTS
+  else
+    check_fail "agent:list failed or returned no agents"
+  fi
+fi
+
+if [ "$FAIL" -eq 0 ]; then
+  printf '\nHome looks wakeable.\n'
+else
+  printf '\nHome is not wakeable yet. Fix the failed checks above.\n' >&2
+fi
+
+exit "$FAIL"

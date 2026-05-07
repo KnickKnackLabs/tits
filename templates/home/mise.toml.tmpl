@@ -1,0 +1,24 @@
+[settings]
+experimental = true
+quiet = true
+task_output = "interleave"
+
+[plugins]
+shiv = "https://github.com/KnickKnackLabs/vfox-shiv"
+
+[tools]
+usage = "latest"
+"shiv:shimmer" = "latest"
+"shiv:sessions" = "latest"
+"shiv:secrets" = "latest"
+"shiv:emails" = "latest"
+"shiv:rudi" = "latest"
+"shiv:notes" = "latest"
+"shiv:modules" = "latest"
+"shiv:codebase" = "latest"
+
+[_.codebase]
+lint = ["mise-settings", "gum-table"]
+
+[_.codebase.scope]
+gum-table = ".mise/tasks"

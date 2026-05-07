@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#MISE description="Orient {{AGENT}} at session start"
+set -euo pipefail
+
+HOME_DIR="$MISE_CONFIG_ROOT"
+AGENT="{{AGENT}}"
+
+echo "=== ${AGENT} home ==="
+echo
+if [ -f "$HOME_DIR/notes/Status.md" ]; then
+  echo "Status: $HOME_DIR/notes/Status.md"
+else
+  echo "Status: missing notes/Status.md"
+fi
+
+echo
+if [ -n "${HUMAN_MD:-}" ] && [ -f "$HUMAN_MD" ]; then
+  echo "HUMAN.md: $HUMAN_MD"
+else
+  echo "HUMAN.md: unavailable in this environment"
+fi

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Render identity for an agent supported by this home"
+#USAGE arg "agent" help="Agent name"
+set -euo pipefail
+
+if [ "${usage_agent}" != "{{AGENT}}" ]; then
+  echo "Unsupported agent: ${usage_agent}" >&2
+  exit 1
+fi
+
+cat "$MISE_CONFIG_ROOT/CLAUDE.md"

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Print the HUMAN.md path when available"
+set -euo pipefail
+
+if [ -n "${HUMAN_MD:-}" ]; then
+  printf '%s\n' "$HUMAN_MD"
+fi

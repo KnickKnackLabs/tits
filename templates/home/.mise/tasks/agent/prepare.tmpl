@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#MISE description="Prepare this home repo for an agent run"
+set -euo pipefail
+
+# Mechanical, idempotent setup only. Keep orientation in welcome.
+if [ -d .git-crypt ]; then
+  rudi install
+fi
+
+if [ -f notes/.manifest ]; then
+  notes unlock
+  notes install-hooks
+fi
+
+if [ -f .modules/manifest ] || [ -f .modules/config ]; then
+  modules unlock
+  modules install-hooks
+  modules init
+fi
