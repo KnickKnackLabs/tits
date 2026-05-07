@@ -13,6 +13,9 @@ load test_helper
   assert_file_executable "$home/.mise/tasks/welcome"
   assert_file_executable "$home/.mise/tasks/agent/list"
   assert_file_executable "$home/.mise/tasks/agent/prepare"
+  [ ! -e "$home/.tits/agent" ]
+  git -C "$home" rev-parse --verify HEAD >/dev/null
+  [ -z "$(git -C "$home" status --porcelain)" ]
 
   printf 'custom\n' > "$home/CLAUDE.md"
   run tits init --agent iris --home "$home" --skip-workflows
@@ -31,6 +34,16 @@ load test_helper
   run bash -c "cd '$home' && mise run -q agent:identity iris"
   assert_success
   assert_output_contains "# iris"
+}
+
+@test "init honors --no-commit" {
+  home="$(make_home)"
+
+  run tits init --agent iris --home "$home" --skip-workflows --no-commit
+  assert_success
+  run git -C "$home" rev-parse --verify HEAD
+  assert_failure
+  [ -n "$(git -C "$home" status --porcelain)" ]
 }
 
 @test "init rejects invalid agent names" {

@@ -3,6 +3,7 @@
 #USAGE flag "--agent <agent>" help="Agent name to scaffold (for example: iris)"
 #USAGE flag "--home <path>" help="Home repo path to create or update"
 #USAGE flag "--skip-workflows" help="Skip shimmer workflows:generate (for tests or offline scaffolding)"
+#USAGE flag "--no-commit" help="Leave generated files uncommitted, even for a brand-new repo"
 #USAGE example "tits init --agent iris --home ~/agents/iris/home" header="Create Iris's home"
 set -euo pipefail
 
@@ -15,12 +16,21 @@ TARGET_HOME="$(resolve_home_path "${usage_home:-}")"
 
 mkdir -p "$TARGET_HOME"
 
+NEW_REPO=false
 if [ ! -d "$TARGET_HOME/.git" ]; then
   git -C "$TARGET_HOME" init -q -b main
   say "init: git repo"
+  NEW_REPO=true
 else
   say "keep: git repo"
 fi
+
+HAS_COMMITS=true
+if ! git -C "$TARGET_HOME" rev-parse --verify HEAD >/dev/null 2>&1; then
+  HAS_COMMITS=false
+fi
+
+PREEXISTING_CHANGES="$(git -C "$TARGET_HOME" status --porcelain)"
 
 install_home_templates "$AGENT" "$AGENT_UPPER"
 
@@ -31,6 +41,23 @@ if [ "${usage_skip_workflows:-false}" = "true" ]; then
 else
   say "run: shimmer workflows:generate"
   (cd "$TARGET_HOME" && shimmer workflows:generate)
+fi
+
+if [ "${usage_no_commit:-false}" = "true" ]; then
+  say "skip: initial commit (--no-commit)"
+elif { [ "$NEW_REPO" = "true" ] || [ "$HAS_COMMITS" = "false" ]; } && [ -z "$PREEXISTING_CHANGES" ]; then
+  if [ -n "$(git -C "$TARGET_HOME" status --porcelain)" ]; then
+    git -C "$TARGET_HOME" add .
+    git -C "$TARGET_HOME" commit -m "bootstrap agent home" >/dev/null
+    say "commit: bootstrap agent home"
+  else
+    say "skip: initial commit (no changes)"
+  fi
+elif [ "$HAS_COMMITS" = "false" ]; then
+  say "skip: initial commit (pre-existing uncommitted files)"
+  say "next: review changes in $TARGET_HOME and commit when ready"
+else
+  say "next: review changes in $TARGET_HOME and commit when ready"
 fi
 
 say "done: $AGENT home at $TARGET_HOME"

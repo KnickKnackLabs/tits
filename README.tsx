@@ -56,6 +56,9 @@ tits doctor --home .`}</CodeBlock>
     </Section>
 
     <Section title="Generated home surface">
+      <Paragraph>
+        {"For a brand-new or no-commit home with a clean working tree, "}<Code>init</Code>{" creates the initial "}<Code>bootstrap agent home</Code>{" commit. Use "}<Code>--no-commit</Code>{" to leave files uncommitted."}
+      </Paragraph>
       <List>
         <Item><Code>mise run welcome</Code>{" — session-start orientation"}</Item>
         <Item><Code>mise run self</Code>{" — self-session placeholder"}</Item>

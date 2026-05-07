@@ -11,7 +11,7 @@
 
 **Bootstrap and doctor an Iris-first agent home.**
 
-![tests: 6](https://img.shields.io/badge/tests-6-brightgreen?style=flat)
+![tests: 7](https://img.shields.io/badge/tests-7-brightgreen?style=flat)
 ![generator: agent homes](https://img.shields.io/badge/generator-agent%20homes-blue?style=flat)
 ![workflows: shimmer](https://img.shields.io/badge/workflows-shimmer-4a4a4a?style=flat)
 
@@ -37,6 +37,8 @@ tits doctor --home .
 ```
 
 ## Generated home surface
+
+For a brand-new or no-commit home with a clean working tree, `init` creates the initial `bootstrap agent home` commit. Use `--no-commit` to leave files uncommitted.
 
 - `mise run welcome` — session-start orientation
 - `mise run self` — self-session placeholder
