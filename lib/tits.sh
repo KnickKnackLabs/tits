@@ -38,7 +38,7 @@ resolve_home_path() {
 
   case "$path" in
     /*) printf '%s\n' "$path" ;;
-    *)  printf '%s/%s\n' "${CALLER_PWD:-$PWD}" "$path" ;;
+    *)  printf '%s/%s\n' "${TITS_CALLER_PWD:-${CALLER_PWD:-$PWD}}" "$path" ;;
   esac
 }
 

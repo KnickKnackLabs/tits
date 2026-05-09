@@ -1,11 +1,19 @@
 tits() {
-  cd "$REPO_DIR" && CALLER_PWD="$CALLER_PWD" mise run -q "$@"
+  if [ -z "${CALLER_PWD:-}" ]; then
+    echo "CALLER_PWD not set" >&2
+    return 1
+  fi
+
+  cd "$REPO_DIR" && TITS_CALLER_PWD="$CALLER_PWD" mise run -q "$@"
 }
 export -f tits
 
-make_home() {
+setup() {
   export CALLER_PWD="$BATS_TEST_TMPDIR/caller"
   mkdir -p "$CALLER_PWD"
+}
+
+make_home() {
   printf '%s/home' "$BATS_TEST_TMPDIR"
 }
 

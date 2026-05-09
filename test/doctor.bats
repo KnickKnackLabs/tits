@@ -23,6 +23,19 @@ load test_helper
   assert_output_contains "Home looks wakeable."
 }
 
+@test "doctor resolves relative --home from shiv caller cwd" {
+  home="$(make_home)"
+  tits init --agent iris --home "$home" --skip-workflows
+  mkdir -p "$home/.github/workflows"
+  touch "$home/.github/workflows/agent-run.yml"
+  touch "$home/.github/workflows/iris.yml"
+
+  CALLER_PWD="$home"
+  run tits doctor --home .
+  assert_success
+  assert_output_contains "Home looks wakeable."
+}
+
 @test "doctor catches missing generated workflow" {
   home="$(make_home)"
   tits init --agent iris --home "$home" --skip-workflows
