@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./assets/tits-hero.jpg" alt="Great tit and blue tit perched on a log" width="720" />
+<img src="./assets/tits-hero.jpg" alt="Two tits perched on a log. Get your mind out of the gutter, Andy." width="720" />
 
 # tits
 

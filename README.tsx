@@ -20,7 +20,7 @@ const heroImage = "./assets/tits-hero.jpg";
 const readme = (
   <>
     <Center>
-      <Raw>{`<img src="${heroImage}" alt="Great tit and blue tit perched on a log" width="720" />\n\n`}</Raw>
+      <Raw>{`<img src="${heroImage}" alt="Two tits perched on a log. Get your mind out of the gutter, Andy." width="720" />\n\n`}</Raw>
       <Heading level={1}>tits</Heading>
       <Paragraph><Bold>Bootstrap and doctor an Iris-first agent home.</Bold></Paragraph>
       <Badges>
