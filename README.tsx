@@ -15,17 +15,12 @@ const testCount = readdirSync(testDir)
   .join("\n")
   .match(/@test "/g)?.length ?? 0;
 
-const logo = String.raw`
-        (\_/)
-   (\_/) ( o_o)   tits
-   ( o_o) / >*     agent homes hatch here
-   / >bird
-`;
+const heroImage = "./assets/tits-hero.jpg";
 
 const readme = (
   <>
     <Center>
-      <Raw>{`<pre>${logo}</pre>\n\n`}</Raw>
+      <Raw>{`<img src="${heroImage}" alt="Great tit and blue tit perched on a log" width="720" />\n\n`}</Raw>
       <Heading level={1}>tits</Heading>
       <Paragraph><Bold>Bootstrap and doctor an Iris-first agent home.</Bold></Paragraph>
       <Badges>

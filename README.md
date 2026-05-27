@@ -1,11 +1,6 @@
 <div align="center">
 
-<pre>
-        (\_/)
-   (\_/) ( o_o)   tits
-   ( o_o) / >*     agent homes hatch here
-   / >bird
-</pre>
+<img src="./assets/tits-hero.jpg" alt="Great tit and blue tit perched on a log" width="720" />
 
 # tits
 
