@@ -11,6 +11,10 @@ export -f tits
 setup() {
   export TITS_CALLER_PWD="$BATS_TEST_TMPDIR/caller"
   export MISE_STATE_DIR="$BATS_TEST_TMPDIR/mise-state"
+  export GIT_AUTHOR_NAME="tits test"
+  export GIT_AUTHOR_EMAIL="tits-test@example.invalid"
+  export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+  export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
   mkdir -p "$TITS_CALLER_PWD" "$MISE_STATE_DIR"
 }
 
