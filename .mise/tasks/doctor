@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #MISE description="Check an agent home scaffold"
 #USAGE flag "--home <path>" help="Home repo path to check"
+#USAGE example "tits doctor --home ~/agents/iris/home" header="Check an agent home"
 set -euo pipefail
 
 source "$MISE_CONFIG_ROOT/lib/tits.sh"

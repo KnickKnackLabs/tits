@@ -6,7 +6,8 @@
 
 **Bootstrap and doctor an Iris-first agent home.**
 
-![tests: 8](https://img.shields.io/badge/tests-8-brightgreen?style=flat)
+![tests: 13](https://img.shields.io/badge/tests-13-brightgreen?style=flat)
+![lints: 17](https://img.shields.io/badge/lints-17-blue?style=flat)
 ![generator: agent homes](https://img.shields.io/badge/generator-agent%20homes-blue?style=flat)
 ![workflows: shimmer](https://img.shields.io/badge/workflows-shimmer-4a4a4a?style=flat)
 
@@ -60,7 +61,8 @@ mise trust
 mise install
 mise run test
 readme build
-codebase lint:mise-settings "$PWD"
-codebase lint:gum-table "$PWD"
-codebase lint:shellcheck "$PWD"
+codebase lint "$PWD"
+readme build --check
+
+git diff --check
 ```

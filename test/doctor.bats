@@ -30,7 +30,7 @@ load test_helper
   touch "$home/.github/workflows/agent-run.yml"
   touch "$home/.github/workflows/iris.yml"
 
-  CALLER_PWD="$home"
+  TITS_CALLER_PWD="$home"
   run tits doctor --home .
   assert_success
   assert_output_contains "Home looks wakeable."

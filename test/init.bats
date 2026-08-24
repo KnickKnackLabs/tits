@@ -30,11 +30,11 @@ load test_helper
   home="$(make_home)"
   tits init --agent iris --home "$home" --skip-workflows
 
-  run bash -c "cd '$home' && mise run -q agent:list"
+  run mise -C "$home" run -q agent:list
   assert_success
   [ "$output" = "iris" ]
 
-  run bash -c "cd '$home' && mise run -q agent:identity iris"
+  run mise -C "$home" run -q agent:identity iris
   assert_success
   assert_output_contains "# iris"
 }

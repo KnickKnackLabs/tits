@@ -1,16 +1,17 @@
 tits() {
-  if [ -z "${CALLER_PWD:-}" ]; then
-    echo "CALLER_PWD not set" >&2
+  if [ -z "${TITS_CALLER_PWD:-}" ]; then
+    echo "TITS_CALLER_PWD not set" >&2
     return 1
   fi
 
-  cd "$REPO_DIR" && TITS_CALLER_PWD="$CALLER_PWD" mise run -q "$@"
+  cd "$REPO_DIR" && mise run -q "$@"
 }
 export -f tits
 
 setup() {
-  export CALLER_PWD="$BATS_TEST_TMPDIR/caller"
-  mkdir -p "$CALLER_PWD"
+  export TITS_CALLER_PWD="$BATS_TEST_TMPDIR/caller"
+  export MISE_STATE_DIR="$BATS_TEST_TMPDIR/mise-state"
+  mkdir -p "$TITS_CALLER_PWD" "$MISE_STATE_DIR"
 }
 
 make_home() {
