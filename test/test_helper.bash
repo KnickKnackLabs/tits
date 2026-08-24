@@ -4,7 +4,12 @@ tits() {
     return 1
   fi
 
-  cd "$REPO_DIR" && mise run -q "$@"
+  # Fixture Git operations must not consume ambient identity or signing config.
+  cd "$REPO_DIR" && env \
+    GIT_CONFIG_COUNT=0 \
+    GIT_CONFIG_GLOBAL=/dev/null \
+    GIT_CONFIG_NOSYSTEM=1 \
+    mise run -q "$@"
 }
 export -f tits
 
