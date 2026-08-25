@@ -2,19 +2,22 @@
 experimental = true
 quiet = true
 task_output = "interleave"
+aqua.registries = ["https://github.com/KnickKnackLabs/bats-core"]
 
 [plugins]
 shiv = "https://github.com/KnickKnackLabs/vfox-shiv"
 
 [tools]
-bats = "1.13.0"
+"aqua:KnickKnackLabs/bats-core" = "1.14.0-kkl.1"
+"aqua:shenwei356/rush" = "0.9.0"
 usage = "latest"
 "shiv:shimmer" = "latest"
-"shiv:codebase" = "latest"
+"shiv:codebase" = "0.4"
 "shiv:readme" = "latest"
 
 [_.codebase]
-lint = ["mise-settings", "gum-table"]
+name = "tits"
+lint = ["@all"]
 
 [_.codebase.scope]
 gum-table = ".mise/tasks"

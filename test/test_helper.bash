@@ -1,16 +1,26 @@
 tits() {
-  if [ -z "${CALLER_PWD:-}" ]; then
-    echo "CALLER_PWD not set" >&2
+  if [ -z "${TITS_CALLER_PWD:-}" ]; then
+    echo "TITS_CALLER_PWD not set" >&2
     return 1
   fi
 
-  cd "$REPO_DIR" && TITS_CALLER_PWD="$CALLER_PWD" mise run -q "$@"
+  # Fixture Git operations must not consume ambient identity or signing config.
+  cd "$REPO_DIR" && env \
+    GIT_CONFIG_COUNT=0 \
+    GIT_CONFIG_GLOBAL=/dev/null \
+    GIT_CONFIG_NOSYSTEM=1 \
+    mise run -q "$@"
 }
 export -f tits
 
 setup() {
-  export CALLER_PWD="$BATS_TEST_TMPDIR/caller"
-  mkdir -p "$CALLER_PWD"
+  export TITS_CALLER_PWD="$BATS_TEST_TMPDIR/caller"
+  export MISE_STATE_DIR="$BATS_TEST_TMPDIR/mise-state"
+  export GIT_AUTHOR_NAME="tits test"
+  export GIT_AUTHOR_EMAIL="tits-test@example.invalid"
+  export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+  export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+  mkdir -p "$TITS_CALLER_PWD" "$MISE_STATE_DIR"
 }
 
 make_home() {

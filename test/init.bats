@@ -26,15 +26,33 @@ load test_helper
   [ "$(cat "$home/CLAUDE.md")" = "custom" ]
 }
 
+@test "init fixture ignores ambient Git signing config" {
+  home="$(make_home)"
+
+  export GIT_CONFIG_COUNT=3
+  export GIT_CONFIG_KEY_0=commit.gpgsign
+  export GIT_CONFIG_VALUE_0=true
+  export GIT_CONFIG_KEY_1=gpg.format
+  export GIT_CONFIG_VALUE_1=ssh
+  export GIT_CONFIG_KEY_2=user.signingkey
+  export GIT_CONFIG_VALUE_2="$BATS_TEST_TMPDIR/missing-signing-key"
+
+  run tits init --agent iris --home "$home" --skip-workflows
+  assert_success
+  [ "$(git -C "$home" log -1 --format='%an <%ae>|%cn <%ce>')" = \
+    "tits test <tits-test@example.invalid>|tits test <tits-test@example.invalid>" ]
+  ! git -C "$home" cat-file commit HEAD | grep -q '^gpgsig '
+}
+
 @test "generated agent list and identity tasks execute" {
   home="$(make_home)"
   tits init --agent iris --home "$home" --skip-workflows
 
-  run bash -c "cd '$home' && mise run -q agent:list"
+  run mise -C "$home" run -q agent:list
   assert_success
   [ "$output" = "iris" ]
 
-  run bash -c "cd '$home' && mise run -q agent:identity iris"
+  run mise -C "$home" run -q agent:identity iris
   assert_success
   assert_output_contains "# iris"
 }

@@ -1,5 +1,6 @@
 /** @jsxImportSource jsx-md */
 
+import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync } from "fs";
 import { join, resolve } from "path";
 import {
@@ -17,6 +18,50 @@ const testCount = readdirSync(testDir)
 
 const heroImage = "./assets/tits-hero.jpg";
 
+function configuredLints(): string[] {
+  const miseToml = readFileSync(join(REPO_DIR, "mise.toml"), "utf-8");
+  const start = miseToml.indexOf("[_.codebase]");
+  if (start === -1) return [];
+
+  const lines = miseToml.slice(start).split("\n");
+  const block: string[] = [];
+  for (const [index, line] of lines.entries()) {
+    if (index > 0 && line.startsWith("[")) break;
+    block.push(line);
+  }
+
+  const config = block.join("\n");
+  const list = config.match(/lint\s*=\s*\[([\s\S]*?)\]/)?.[1] ?? "";
+  const configured = [...list.matchAll(/"([^"]+)"/g)].map((match) => match[1]);
+  const excluded = new Set(
+    [...(config.match(/lint_exclude\s*=\s*\[([\s\S]*?)\]/)?.[1] ?? "").matchAll(/"([^"]+)"/g)]
+      .map((match) => match[1]),
+  );
+  if (!configured.some((rule) => rule.startsWith("@"))) {
+    return configured.filter((rule) => !excluded.has(rule));
+  }
+
+  const memberships = new Map<string, string[]>();
+  let currentGroup = "";
+  const groups = execFileSync("codebase", ["lint:groups"], {
+    cwd: REPO_DIR,
+    encoding: "utf8",
+  });
+  for (const line of groups.split("\n")) {
+    if (line.startsWith("@")) {
+      currentGroup = line;
+      memberships.set(currentGroup, []);
+    } else if (currentGroup && line.startsWith("  ")) {
+      memberships.get(currentGroup)?.push(line.trim());
+    }
+  }
+
+  return [...new Set(configured.flatMap((rule) => memberships.get(rule) ?? [rule]))]
+    .filter((rule) => !excluded.has(rule));
+}
+
+const lintCount = configuredLints().length;
+
 const readme = (
   <>
     <Center>
@@ -25,6 +70,7 @@ const readme = (
       <Paragraph><Bold>Bootstrap and doctor an Iris-first agent home.</Bold></Paragraph>
       <Badges>
         <Badge label="tests" value={`${testCount}`} color="brightgreen" />
+        <Badge label="lints" value={`${lintCount}`} color="blue" />
         <Badge label="generator" value="agent homes" color="blue" />
         <Badge label="workflows" value="shimmer" color="4a4a4a" />
       </Badges>
@@ -85,9 +131,10 @@ tits doctor --home .`}</CodeBlock>
 mise install
 mise run test
 readme build
-codebase lint:mise-settings "$PWD"
-codebase lint:gum-table "$PWD"
-codebase lint:shellcheck "$PWD"`}</CodeBlock>
+codebase lint "$PWD"
+readme build --check
+
+git diff --check`}</CodeBlock>
     </Section>
   </>
 );
