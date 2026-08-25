@@ -6,7 +6,7 @@
 
 **Bootstrap and doctor an Iris-first agent home.**
 
-![tests: 14](https://img.shields.io/badge/tests-14-brightgreen?style=flat)
+![tests: 15](https://img.shields.io/badge/tests-15-brightgreen?style=flat)
 ![lints: 17](https://img.shields.io/badge/lints-17-blue?style=flat)
 ![generator: agent homes](https://img.shields.io/badge/generator-agent%20homes-blue?style=flat)
 ![workflows: shimmer](https://img.shields.io/badge/workflows-shimmer-4a4a4a?style=flat)
